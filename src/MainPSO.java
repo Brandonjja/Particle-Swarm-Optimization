@@ -31,7 +31,7 @@ public class MainPSO {
 		return -(y + 47) * Math.sin(Math.sqrt(Math.abs((x / 2) + (y + 47)))) - x * Math.sin(Math.sqrt(Math.abs(x - (y + 47)))); // Eggholder function (global min = -959.6407)
 	}
 	
-	static final int variables = 2; // Leave this as 2 unless you add another function above
+	static final int variables = 2; /** Leave this as 2 unless you add another function above */
 
 	private List<Particle> particles;
 	
@@ -42,8 +42,9 @@ public class MainPSO {
 		Particle.globalFitness = Double.MAX_VALUE;
 	}
 	
-		// Initialize all values for PSO
-		// Adds particles to the "particles" array, which is the population
+		/** Initialize all values for PSO
+		 * Adds particles to the "particles" array, which is the population
+		 */
 		void init() {
 			for (int i = 0; i < popSize; i++) {
 				Particle particle = new Particle(variables);
@@ -64,9 +65,10 @@ public class MainPSO {
 			}
 		}
 		
-		// If a particle finds a position that is more optimal than the current
-		// global best position, update the global best position with the new
-		// optimal position
+		/** If a particle finds a position that is more optimal than the current
+		 * global best position, update the global best position with the new
+		 * optimal position
+		 */
 		void updateGlobalBest() {
 			double pBestFitness;
 			for (Particle p : particles) {
@@ -80,32 +82,36 @@ public class MainPSO {
 			}
 		}
 		
-		// Check if the coordinates are within the bounds of the problem. If not,
-		// set the value that is out of bounds, to that particular bound.
-		// If the velocity will set a particle out of bounds, reset the velocity
-		// back to zero
-		static void checkBounds(Particle p) {
-			if (p.pos[0] > maxX) {
-				p.pos[0] = maxX;
-			} else if (p.pos[0] < minX) {
-				p.pos[0] = minX;
+		/** Check if the coordinates are within the bounds of the problem. If not,
+		 * set the value that is out of bounds, to that particular bound.
+		 * If the velocity will set a particle out of bounds, reset the velocity
+		 * back to zero
+		 * @param particle
+		 */
+		static void checkBounds(Particle particle) {
+			if (particle.pos[0] > maxX) {
+				particle.pos[0] = maxX;
+			} else if (particle.pos[0] < minX) {
+				particle.pos[0] = minX;
 			}
 			
-			if (p.pos[1] > maxY) {
-				p.pos[1] = maxY;
-			} else if (p.pos[1] < minY) {
-				p.pos[1] = minY;
+			if (particle.pos[1] > maxY) {
+				particle.pos[1] = maxY;
+			} else if (particle.pos[1] < minY) {
+				particle.pos[1] = minY;
 			}
 			
-			if (p.velocity[0] > maxX || p.velocity[0] < minX) {
-				p.velocity[0] = 0;
+			if (particle.velocity[0] > maxX || particle.velocity[0] < minX) {
+				particle.velocity[0] = 0;
 			}
-			if (p.velocity[1] > maxY || p.velocity[1] < minY) {
-				p.velocity[1] = 0;
+			if (particle.velocity[1] > maxY || particle.velocity[1] < minY) {
+				particle.velocity[1] = 0;
 			}
 		}
 		
-		// Calculates and updates the new velocity of the current particle
+		/** Calculates and updates the new velocity of the current particle
+		 * @param p
+		 */
 		void calcNewVelocity(Particle p) {
 			Random r = new Random();
 			double inertia[] = new double[variables];
@@ -123,14 +129,14 @@ public class MainPSO {
 			}
 		}
 		
-		// Update the position of a particle using the velocity
+		/** Update the position of a particle using the velocity */
 		void updateParticlePos(Particle p) {
 			for (int i = 0; i < variables; i++) {
 				p.pos[i] = p.pos[i] + p.velocity[i];
 			}
 		}
 		
-		// Base function to run the PSO
+		/** Base function to run the PSO */
 		void runPSO() {
 			
 			init();
